@@ -13,6 +13,7 @@ import { getCurrentUser } from "@/lib/auth"
 import { sql, type Kajian, type Product } from "@/lib/db"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { KajianCarousel } from "@/components/kajian-carousel"
 
 async function getStats() {
   const kajianCount = await sql`SELECT COUNT(*) as count FROM kajian`
@@ -119,52 +120,8 @@ export default async function HomePage() {
           ))}
         </div>
 
-        {/* Upcoming Kajian */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold text-foreground">Kajian Mendatang</h2>
-            <Link href="/kajian" className="text-sm text-primary flex items-center gap-1">
-              Lihat Semua <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {upcomingKajian.map((kajian) => (
-              <Link key={kajian.id} href={`/kajian/${kajian.id}`}>
-                <Card className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex gap-3">
-                      <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                        <BookOpen className="w-8 h-8 text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-foreground truncate">
-                          {kajian.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground truncate">
-                          {kajian.ustadz}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground">
-                            {kajian.schedule_date}
-                          </span>
-                          <span
-                            className={`text-xs px-2 py-0.5 rounded-full ${
-                              kajian.type === "free"
-                                ? "bg-primary/10 text-primary"
-                                : "bg-accent/10 text-accent"
-                            }`}
-                          >
-                            {kajian.type === "free" ? "Gratis" : formatPrice(kajian.price)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
+        {/* Upcoming Kajian Carousel */}
+        <KajianCarousel />
 
         {/* Featured Products */}
         <section>
